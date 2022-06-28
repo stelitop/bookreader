@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bookreader.javafx.ScreenshotController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bookreader.javafx.controllers.ScreenshotController">
    <children>
       <Button layoutX="238.0" layoutY="316.0" mnemonicParsing="false" onAction="#takePicture" prefHeight="26.0" prefWidth="124.0" text="Take Picture" />
       <ImageView fx:id="captureDisplay" fitHeight="224.0" fitWidth="322.0" layoutX="139.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true" />

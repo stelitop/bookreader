@@ -5,10 +5,10 @@ import javafx.application.Application;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BookreaderApplication {
+public class Main {
 
 	public static void main(String[] args) {
-		//SpringApplication.run(BookreaderApplication.class, args);
+		//SpringApplication.run(Main.class, args);
 		Application.launch(JavaFxApplication.class, args);
 	}
 }

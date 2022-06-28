@@ -1,4 +1,4 @@
-package bookreader.javafx;
+package bookreader.javafx.controllers;
 
 import bookreader.MotionChecker;
 import bookreader.components.ScanningCamera;
@@ -33,26 +33,21 @@ public class MotionDetectionController implements Initializable {
     private Label feedbackLabel;
 
     private final ScanningCamera scanningCamera;
-    private final ImageUtils imageUtils;
-
-    private Webcam webcam;
 
     @Autowired
-    public MotionDetectionController(ScanningCamera scanningCamera, ImageUtils imageUtils) {
+    public MotionDetectionController(ScanningCamera scanningCamera) {
         this.scanningCamera = scanningCamera;
-        this.imageUtils = imageUtils;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        webcam = Webcam.getDefault();
+        scanningCamera.setWebcam(Webcam.getDefault());
     }
 
     /**
      * Opens the default camera and starts taking frames periodically, feeding them into the motionchecker.
-     * @param event JavaFX action event
      */
-    public void startWatching(ActionEvent event) {
+    public void startWatching() {
 //        webcam.open();
 //
 //        Thread cameraSSThread = new Thread(() -> {
@@ -71,7 +66,6 @@ public class MotionDetectionController implements Initializable {
 //        });
 //        cameraSSThread.start();
         System.out.println(scanningCamera.isOpen());
-        scanningCamera.setWebcam(Webcam.getDefault());
         //scanningCamera.open();
         scanningCamera.startMotionDetection(100, new WebcamMotionListener() {
             @Override
@@ -85,9 +79,8 @@ public class MotionDetectionController implements Initializable {
 
     /**
      * Closes the camera.
-     * @param event JavaFX action event.
      */
-    public void stopWatching(ActionEvent event) {
+    public void stopWatching() {
 //        webcam.close();
 //        imageView.setImage(null);
         scanningCamera.stopMotionDetection();

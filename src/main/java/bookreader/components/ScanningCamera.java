@@ -1,6 +1,5 @@
 package bookreader.components;
 
-import bookreader.javafx.MotionDetectionController;
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamException;
 import com.github.sarxos.webcam.WebcamMotionDetector;
@@ -71,7 +70,7 @@ public class ScanningCamera {
 
     /**
      * Opens the webcam (if not opened already) and starts tracking for motion.
-     * @param interval How much time between frames to check, in milliseconds.
+     * @param interval How much time between frames to check, in milliseconds. Minimum allowed interval is 100ms.
      * @param listener Event listener that triggers when motion is detected.
      * @throws IllegalStateException When the scanning camera is not the correct state.
      */

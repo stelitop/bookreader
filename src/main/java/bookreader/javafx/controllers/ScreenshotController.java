@@ -1,4 +1,4 @@
-package bookreader.javafx;
+package bookreader.javafx.controllers;
 
 import com.github.sarxos.webcam.Webcam;
 import javafx.embed.swing.SwingFXUtils;

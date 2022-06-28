@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bookreader.javafx.MotionDetectionController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bookreader.javafx.controllers.MotionDetectionController">
    <children>
       <Button layoutX="194.0" layoutY="329.0" mnemonicParsing="false" onAction="#startWatching" text="Start Watching" />
       <Button layoutX="311.0" layoutY="329.0" mnemonicParsing="false" onAction="#stopWatching" text="Stop Watching" />
