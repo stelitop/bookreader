@@ -21,8 +21,8 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 @Component
-@FxmlView("main-scene.fxml")
-public class MyController {
+@FxmlView("Screenshot.fxml")
+public class ScreenshotController {
 
     @FXML
     private ImageView captureDisplay;
@@ -30,7 +30,7 @@ public class MyController {
     private WeatherService weatherService;
 
     @Autowired
-    public MyController(WeatherService weatherService) {
+    public ScreenshotController(WeatherService weatherService) {
         this.weatherService = weatherService;
     }
 
@@ -41,6 +41,5 @@ public class MyController {
         //TODO: Optimise image capturing process by converting directly from a byte stream to an JavaFX Image
         captureDisplay.setImage(SwingFXUtils.toFXImage(image, null));
         webcam.close();
-        System.out.println("123");
     }
 }
