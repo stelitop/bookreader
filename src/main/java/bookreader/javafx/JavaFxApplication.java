@@ -26,7 +26,7 @@ public class JavaFxApplication extends Application {
     @Override
     public void start(Stage primaryStage) {
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
-        Parent root = fxWeaver.loadView(ScreenshotController.class);
+        Parent root = fxWeaver.loadView(MotionDetectionController.class);
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();
