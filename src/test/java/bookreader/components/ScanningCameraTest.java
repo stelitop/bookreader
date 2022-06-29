@@ -32,39 +32,6 @@ class ScanningCameraTest {
     }
 
     @Test
-    void openWebcamNull() {
-        sc = new ScanningCamera();
-        assertThrows(NullPointerException.class, () -> sc.open());
-    }
-
-    @Test
-    void openWebcamNormal() {
-        sc.open();
-        verify(webcamMock, times(1)).open();
-    }
-
-    @Test
-    void closeWebcam() {
-        sc.open();
-        when(webcamMock.isOpen()).thenReturn(true);
-        sc.close();
-        verify(webcamMock, times(1)).close();
-    }
-
-    @Test
-    void isOpenTrue() {
-        when(webcamMock.isOpen()).thenReturn(true);
-        sc.open();
-        assertThat(sc.isOpen()).isTrue();
-    }
-
-    @Test
-    void isOpenFalse() {
-        when(webcamMock.isOpen()).thenReturn(false);
-        assertThat(sc.isOpen()).isFalse();
-    }
-
-    @Test
     void startMotionDetection() {
         //TODO
     }

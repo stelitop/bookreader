@@ -51,9 +51,9 @@ public class CameraMenuController implements Initializable {
         if (comboBox.getValue() == null) {
             return;
         }
-        scanningCamera.open();
+        scanningCamera.getWebcam().open();
         BufferedImage img = scanningCamera.getWebcam().getImage();
         imageView.setImage(SwingFXUtils.toFXImage(img, null));
-        scanningCamera.close();
+        scanningCamera.getWebcam().close();
     }
 }

@@ -74,15 +74,15 @@ public class MotionDetectionController implements Initializable {
 //        });
 //        cameraSSThread.start();
 
-        scanningCamera.startMotionDetection(100, new WebcamMotionListener() {
+        scanningCamera.startMotionDetection(100, new ScanningCamera.MotionEndingListener() {
             @Override
-            public void motionDetected(WebcamMotionEvent wme) {
+            public void afterMotion(BufferedImage frame) {
                 Platform.runLater(() -> {
                     feedbackLabel.setText("Motion at: " + LocalTime.now().toString());
                     MediaPlayer mp = new MediaPlayer(cameraSound);
                     mp.setVolume(0.20);
                     mp.play();
-                    imageView.setImage( SwingFXUtils.toFXImage(wme.getCurrentImage(), null) );
+                    imageView.setImage( SwingFXUtils.toFXImage(frame, null) );
                 });
             }
         });
