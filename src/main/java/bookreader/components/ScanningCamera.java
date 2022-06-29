@@ -94,6 +94,14 @@ public class ScanningCamera {
     }
 
     /**
+     * Gets the Webcam Motion Detector.
+     * @return The webcam motion detector if the it's currently enabled, null if it's not.
+     */
+    public WebcamMotionDetector getMotionDetector() {
+        return this.motionDetector;
+    }
+
+    /**
      * Checks whether the webcam is currently looking for motion detection.
      * @return True if it is, false otherwise.
      */
