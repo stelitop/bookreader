@@ -2,6 +2,7 @@ package bookreader.javafx;
 
 import bookreader.Main;
 import bookreader.javafx.controllers.CameraMenuController;
+import bookreader.javafx.controllers.MotionDetectionController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Parent;
@@ -27,7 +28,7 @@ public class JavaFxApplication extends Application {
     @Override
     public void start(Stage primaryStage) {
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
-        Parent root = fxWeaver.loadView(CameraMenuController.class);
+        Parent root = fxWeaver.loadView(MotionDetectionController.class);
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();

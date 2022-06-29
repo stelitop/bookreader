@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import java.awt.image.BufferedImage;
 
+//unused currently
 @Component
 public class MotionChecker {
 

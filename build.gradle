@@ -3,6 +3,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 	id("org.openjfx.javafxplugin") version "0.0.11"
+	id 'application'
 }
 
 group = 'com.example'
@@ -13,9 +14,13 @@ repositories {
 	mavenCentral()
 }
 
+application {
+	mainClassName = "bookreader.Main"
+}
+
 javafx {
 	version = "18.0.1"
-	modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.swing' ]
+	modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.swing', 'javafx.media' ]
 }
 
 dependencies {
@@ -26,6 +31,7 @@ dependencies {
 	implementation 'org.openjfx:javafx-controls:18.0.1'
 	implementation 'org.openjfx:javafx-fxml:18.0.1'
 	implementation 'org.openjfx:javafx-swing:18.0.1'
+	implementation 'org.openjfx:javafx-media:18.0.1'
 
 	implementation 'com.github.sarxos:webcam-capture:0.3.12'
 

@@ -14,11 +14,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.net.URL;
 import java.time.LocalTime;
 import java.util.ResourceBundle;
@@ -33,6 +37,7 @@ public class MotionDetectionController implements Initializable {
     private Label feedbackLabel;
 
     private final ScanningCamera scanningCamera;
+    private Media cameraSound;
 
     @Autowired
     public MotionDetectionController(ScanningCamera scanningCamera) {
@@ -42,6 +47,9 @@ public class MotionDetectionController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         scanningCamera.setWebcam(Webcam.getDefault());
+
+        String musicFile = "CameraShutterSoundEffect.mp3";
+        this.cameraSound = new Media(new File(musicFile).toURI().toString());
     }
 
     /**
@@ -65,13 +73,16 @@ public class MotionDetectionController implements Initializable {
 //            }
 //        });
 //        cameraSSThread.start();
-        System.out.println(scanningCamera.isOpen());
-        //scanningCamera.open();
+
         scanningCamera.startMotionDetection(100, new WebcamMotionListener() {
             @Override
             public void motionDetected(WebcamMotionEvent wme) {
                 Platform.runLater(() -> {
                     feedbackLabel.setText("Motion at: " + LocalTime.now().toString());
+                    MediaPlayer mp = new MediaPlayer(cameraSound);
+                    mp.setVolume(0.20);
+                    mp.play();
+                    imageView.setImage( SwingFXUtils.toFXImage(wme.getCurrentImage(), null) );
                 });
             }
         });
