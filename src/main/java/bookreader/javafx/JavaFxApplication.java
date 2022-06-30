@@ -1,6 +1,8 @@
 package bookreader.javafx;
 
-import bookreader.BookreaderApplication;
+import bookreader.Main;
+import bookreader.javafx.controllers.CameraMenuController;
+import bookreader.javafx.controllers.MotionDetectionController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Parent;
@@ -19,14 +21,14 @@ public class JavaFxApplication extends Application {
         String[] args = getParameters().getRaw().toArray(new String[0]);
 
         this.applicationContext = new SpringApplicationBuilder()
-                .sources(BookreaderApplication.class)
+                .sources(Main.class)
                 .run(args);
     }
 
     @Override
     public void start(Stage primaryStage) {
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
-        Parent root = fxWeaver.loadView(MyController.class);
+        Parent root = fxWeaver.loadView(MotionDetectionController.class);
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();

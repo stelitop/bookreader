@@ -8,6 +8,6 @@ class BookreaderApplicationTests {
 
 	@Test
 	void contextLoads() {
-	}
 
+	}
 }
