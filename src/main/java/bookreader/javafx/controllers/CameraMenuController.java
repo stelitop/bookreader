@@ -53,6 +53,7 @@ public class CameraMenuController implements Initializable {
         }
         scanningCamera.getWebcam().open();
         BufferedImage img = scanningCamera.getWebcam().getImage();
+        System.out.println(img.getWidth() + " : " + img.getHeight());
         imageView.setImage(SwingFXUtils.toFXImage(img, null));
         scanningCamera.getWebcam().close();
     }

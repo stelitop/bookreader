@@ -44,6 +44,13 @@ public class ScanningCamera implements WebcamMotionListener{
     }
 
     /**
+     * Autodetects a webcam, using the default
+     */
+    public void autodetectWebcam() {
+        this.webcam = Webcam.getDefault();
+    }
+
+    /**
      * Gets the webcam.
      * @return The webcam currently used.
      */
@@ -69,7 +76,11 @@ public class ScanningCamera implements WebcamMotionListener{
         if (this.webcam == null) throw new IllegalStateException();
         if (this.motionDetector != null) throw new IllegalStateException();
 
-        this.motionDetector = new WebcamMotionDetector(this.webcam);
+        this.motionDetector = new WebcamMotionDetector(
+                this.webcam,
+                WebcamMotionDetectorDefaultAlgorithm.DEFAULT_PIXEL_THREASHOLD + 10,
+                WebcamMotionDetectorDefaultAlgorithm.DEFAULT_AREA_THREASHOLD
+        );
         this.motionDetector.setInterval(interval);
         this.motionDetector.addMotionListener(this);
         this.listener = listener;
@@ -103,6 +114,14 @@ public class ScanningCamera implements WebcamMotionListener{
      */
     public boolean isMotionDetectionEnabled() {
         return this.motionDetector != null;
+    }
+
+    /**
+     * Adds a motion listener that triggers every time the webcam detects motion.
+     * @param listener Event listener.
+     */
+    public void addMotionListener(WebcamMotionListener listener) {
+        this.motionDetector.addMotionListener(listener);
     }
 
     /**

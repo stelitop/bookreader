@@ -4,6 +4,8 @@ import com.github.sarxos.webcam.Webcam;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.awt.image.BufferedImage;
+
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -32,8 +34,8 @@ class ScanningCameraTest {
     }
 
     @Test
-    void startMotionDetection() {
-        //TODO
+    void startMotionDetection() throws InterruptedException {
+
     }
 
     @Test
