@@ -1,6 +1,7 @@
 package bookreader.javafx.controllers;
 
 import bookreader.MotionChecker;
+import bookreader.components.OCR;
 import bookreader.components.ScanningCamera;
 import bookreader.utils.ImageUtils;
 import com.github.sarxos.webcam.Webcam;
@@ -18,6 +19,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import net.rgielen.fxweaver.core.FxmlView;
+import net.sourceforge.tess4j.Tesseract;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +27,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URL;
 import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 @Component
@@ -37,15 +40,18 @@ public class MotionDetectionController implements Initializable {
     private Label feedbackLabel;
 
     private final ScanningCamera scanningCamera;
+    private final OCR ocr;
     private Media cameraSound;
 
     @Autowired
-    public MotionDetectionController(ScanningCamera scanningCamera) {
+    public MotionDetectionController(ScanningCamera scanningCamera, OCR ocr) {
         this.scanningCamera = scanningCamera;
+        this.ocr = ocr;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        System.out.println(Arrays.toString(Webcam.getWebcams().stream().map(Object::toString).toArray()));
         scanningCamera.setWebcam(Webcam.getDefault());
 
         String musicFile = "CameraShutterSoundEffect.mp3";
@@ -84,7 +90,16 @@ public class MotionDetectionController implements Initializable {
                     mp.play();
                     imageView.setImage( SwingFXUtils.toFXImage(frame, null) );
                 });
+
+                System.out.println("---------------------------------------");
+                System.out.println(ocr.processImage(frame));
             }
+        });
+
+        scanningCamera.addMotionListener((webcamMotionEvent) -> {
+            Platform.runLater(() -> {
+                imageView.setImage( SwingFXUtils.toFXImage(webcamMotionEvent.getCurrentImage(), null) );
+            });
         });
     }
 
