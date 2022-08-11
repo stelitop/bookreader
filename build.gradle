@@ -22,7 +22,7 @@ application {
 
 javafx {
 	version = "18.0.1"
-	modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.swing', 'javafx.media' ]
+	modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.swing', 'javafx.media', 'javafx.graphics' ]
 }
 
 dependencies {
@@ -34,10 +34,17 @@ dependencies {
 	implementation 'org.openjfx:javafx-fxml:18.0.1'
 	implementation 'org.openjfx:javafx-swing:18.0.1'
 	implementation 'org.openjfx:javafx-media:18.0.1'
+	implementation 'org.openjfx:javafx-graphics:18.0.1'
 
 	implementation 'com.github.sarxos:webcam-capture:0.3.12'
 
 	implementation 'net.sourceforge.tess4j:tess4j:5.2.1'
+
+	implementation platform('com.google.cloud:libraries-bom:26.0.0')
+	implementation 'com.google.cloud:google-cloud-texttospeech'
+
+	implementation 'net.sf.sociaal:freetts:1.2.2'
+	implementation 'org.jetbrains:annotations:20.1.0'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.assertj:assertj-core:3.23.1'
