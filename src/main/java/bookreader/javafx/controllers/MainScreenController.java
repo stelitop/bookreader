@@ -31,6 +31,7 @@ import org.springframework.stereotype.Component;
 
 import javax.speech.AudioException;
 import javax.speech.EngineException;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -67,6 +68,7 @@ public class MainScreenController implements Initializable {
     private final ApplicationContext applicationContext;
     private final TextUtils textUtils;
     private final KeyInputProcesser keyInputProcesser;
+    private final ScanningCamera scanningCamera;
 
     /**
      * Dependencies of the constructor.
@@ -80,7 +82,8 @@ public class MainScreenController implements Initializable {
             TextHighlighter textHighlighter,
             ApplicationContext applicationContext,
             TextUtils textUtils,
-            KeyInputProcesser keyInputProcesser)
+            KeyInputProcesser keyInputProcesser,
+            ScanningCamera scanningCamera)
     {
         this.ocr = ocr;
         this.fileProcesser = fileProcesser;
@@ -90,6 +93,7 @@ public class MainScreenController implements Initializable {
         this.applicationContext = applicationContext;
         this.textUtils = textUtils;
         this.keyInputProcesser = keyInputProcesser;
+        this.scanningCamera = scanningCamera;
     }
 
     /**
@@ -116,6 +120,7 @@ public class MainScreenController implements Initializable {
      * Opens the file explorer menu when the button is clicked.
      */
     public void openFile() {
+        closeFile(); // closes the previously open file
         FileChooser fc = new FileChooser();
         fc.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("All Files", "*"),
@@ -128,6 +133,11 @@ public class MainScreenController implements Initializable {
         new Thread(() -> {
             try {
                 String output = fileProcesser.processFile(selectedFile);
+                if (output.isEmpty()) {
+                    loadingText.setText("");
+                    return;
+                }
+
                 //mainTextArea.setText(output);
                 Platform.runLater(() -> {
                     transformTextToNodes(output);
@@ -146,7 +156,6 @@ public class MainScreenController implements Initializable {
                 loadingText.setText("");
             });
         }).start();
-
     }
 
     /**
@@ -190,6 +199,7 @@ public class MainScreenController implements Initializable {
             curIndex++;
         }
         this.textHighlighter.load(actualWords, whitespaces);
+        this.tts.setLanguage(textUtils.getLanguage(text));
         this.tts.loadSounds(words);
         try {
             Thread.sleep(750);
@@ -233,5 +243,39 @@ public class MainScreenController implements Initializable {
         if (textHighlighter.isLoaded()) {
             textHighlighter.refreshLowVisionSettings();
         }
+    }
+
+    public void closeFile() {
+        mainTextWrapper.getChildren().clear();
+        tts.stopCurrentRead();
+        tts.setLanguage(null);
+    }
+
+    public void loadTextFromCameraPicture() {
+        loadingText.setText("Зареждане...");
+
+        new Thread(() -> {
+            BufferedImage img = scanningCamera.takePicture();
+            String output = ocr.processImage(img);
+            if (output == null || output.isEmpty()) {
+                loadingText.setText("");
+                return;
+            }
+
+            //mainTextArea.setText(output);
+            Platform.runLater(() -> {
+                transformTextToNodes(output);
+            });
+            //System.out.println(output);
+            //tts.testPythonReadText(output);
+//                try {
+//                    tts.testFreeTTS(output);
+//                } catch (EngineException | AudioException | InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+            Platform.runLater(() -> {
+                loadingText.setText("");
+            });
+        }).start();
     }
 }

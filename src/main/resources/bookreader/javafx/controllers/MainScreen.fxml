@@ -16,19 +16,14 @@
           <Menu mnemonicParsing="false" text="Файл">
             <items>
                   <MenuItem mnemonicParsing="false" onAction="#openFile" text="Отвори" />
-              <MenuItem mnemonicParsing="false" text="Затвори" />
+              <MenuItem mnemonicParsing="false" onAction="#closeFile" text="Затвори" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
+            <Menu mnemonicParsing="false" text="Камера">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#loadTextFromCameraPicture" text="Снимане" />
+              </items>
+            </Menu>
             <Menu mnemonicParsing="false" text="Настройки за ниско зрение">
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#openLowVisionSettingsWindow" text="Настройки" />
@@ -38,7 +33,7 @@
       </MenuBar>
    </top>
    <bottom>
-      <TextField fx:id="loadingText" editable="false" BorderPane.alignment="CENTER" />
+      <TextField fx:id="loadingText" disable="true" editable="false" BorderPane.alignment="CENTER" />
    </bottom>
    <center>
       <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="549.0" prefWidth="0.0" BorderPane.alignment="CENTER">

@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
+import java.util.Scanner;
 
 /**
  * Processes a given file and outputs the text contained within as a string.
@@ -44,9 +46,9 @@ public class FileProcesser {
             case "png":
             case "jpg":
             case "pdf":
-                return ocr.processFile(file);
             default:
-                throw new UnsupportedExtensionException();
+                return ocr.processFile(file);
+                //throw new UnsupportedExtensionException();
                 // TODO change the default case to try processing the file with tesseract.
         }
     }
@@ -58,13 +60,33 @@ public class FileProcesser {
      * @throws IOException
      */
     private String processTxtFile(File file) throws IOException {
-        BufferedReader bf = new BufferedReader(new FileReader(file));
-        StringBuilder ret = new StringBuilder();
-        String line = bf.readLine();
-        while (line != null) {
-            ret.append(line).append("\n");
-            line = bf.readLine();
+        try (FileInputStream fis = new FileInputStream(file);
+             InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
+             BufferedReader reader = new BufferedReader(isr)
+        ) {
+            StringBuilder ret = new StringBuilder();
+            String str;
+            while ((str = reader.readLine()) != null) {
+                ret.append(str).append("\n");
+            }
+            System.out.println(ret);
+            return ret.toString();
         }
-        return ret.toString();
+
+//        BufferedReader bf = new BufferedReader(new FileReader(file));
+//        StringBuilder ret = new StringBuilder();
+//        String line = bf.readLine();
+//        while (line != null) {
+//            ret.append(line).append("\n");
+//            line = bf.readLine();
+//        }
+//        bf.close();
+
+//        StringBuilder ret = new StringBuilder();
+//        Scanner scanner = new Scanner(file, StandardCharsets.UTF_8);
+//        while (scanner.hasNextLine()) {
+//            ret.append(scanner.nextLine()).append("\n");
+//        }
+//        scanner.close();
     }
 }

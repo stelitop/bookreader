@@ -2,12 +2,25 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bookreader.javafx.controllers.LowVisionSettingsController">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="286.0" prefWidth="772.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bookreader.javafx.controllers.LowVisionSettingsController">
    <children>
-      <Button mnemonicParsing="false" onAction="#increaseFontSize" text="Increase Font Size" />
-      <Button mnemonicParsing="false" onAction="#decreaseFontSize" text="Decrease Font Size" />
-      <Button mnemonicParsing="false" onAction="#cycleMainColors" text="Cycle Main Colors" />
-      <Button mnemonicParsing="false" onAction="#cycleSpotlightColors" text="Cycle Highlight Colors" />
+      <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#increaseFontSize" text="Уголемяване на шрифта" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font size="24.0" />
+         </font></Button>
+      <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#decreaseFontSize" text="Намаляване на шрифта" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font size="24.0" />
+         </font></Button>
+      <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#cycleSpotlightColors" prefHeight="286.0" prefWidth="344.0" text="Промяна на цветовете на общия текст" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font size="24.0" />
+         </font></Button>
+      <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#cycleMainColors" prefHeight="286.0" prefWidth="330.0" text="Промяна на цветовете за селектиран текст" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font size="24.0" />
+         </font></Button>
    </children>
 </HBox>

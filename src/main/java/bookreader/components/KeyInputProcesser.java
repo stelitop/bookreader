@@ -17,14 +17,17 @@ public class KeyInputProcesser implements EventHandler<KeyEvent> {
     // Dependencies
     private final TextHighlighter textHighlighter;
     private final TTSSynthesiser ttsSynthesiser;
+    private final ScanningCamera scanningCamera;
 
     @Autowired
     public KeyInputProcesser(
             TextHighlighter textHighlighter,
-            TTSSynthesiser ttsSynthesiser
+            TTSSynthesiser ttsSynthesiser,
+            ScanningCamera scanningCamera
     ) {
         this.textHighlighter = textHighlighter;
         this.ttsSynthesiser = ttsSynthesiser;
+        this.scanningCamera = scanningCamera;
     }
 
     @Override
@@ -42,7 +45,6 @@ public class KeyInputProcesser implements EventHandler<KeyEvent> {
         };
 
         if (!wordChange) return;
-        String curSelection = textHighlighter.getCurrentSelection();
-        ttsSynthesiser.testPythonReadText(curSelection);
+        ttsSynthesiser.readRange(textHighlighter.getSelectionStart(), textHighlighter.getSelectionEnd());
     }
 }

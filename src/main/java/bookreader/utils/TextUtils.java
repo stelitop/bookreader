@@ -18,6 +18,11 @@ public class TextUtils {
             '.', '?', '!'
     );
 
+    private final Set<Character> commonLatingCyrillicChars = Set.of(
+            'a', 'c', 'e', 'o', 'p', 'x', 'y',
+            'а', 'с', 'е', 'о', 'р', 'х', 'у'
+    );
+
     /**
      * Splits a text into individual words. Words are considered separate
      * if they're separated by an empty space or a new line. Empty words
@@ -58,5 +63,28 @@ public class TextUtils {
      */
     public Set<Character> getSentenceEndingChars() {
         return this.sentenceEndingChars;
+    }
+
+    /**
+     * Determines the language of a given string. The function checks for the appearance
+     * of cyrillic and latin letters and compares it. If the text is very long, only the
+     * first 1000 letters are used to compare.
+     * @param text Text to check.
+     * @return The string "bg" if latin appears more, "en" otherwise.
+     */
+    public String getLanguage(String text) {
+        int cyrillic = 0;
+        int latin = 0;
+
+        for (int i = 0; i < 1000 && i < text.length(); i++) {
+            char c = text.charAt(i);
+
+            if (commonLatingCyrillicChars.contains(c)) continue;
+
+            if (('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z')) latin++;
+            else if (('а' <= c && c <= 'я') || ('А' <= c && c <= 'Я')) cyrillic++;
+        }
+
+        return cyrillic >= latin ? "bg" : "en";
     }
 }

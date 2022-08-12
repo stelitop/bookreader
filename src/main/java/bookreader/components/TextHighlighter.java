@@ -398,4 +398,32 @@ public class TextHighlighter {
         unselectCurrent();
         this.seqStart = this.seqEnd = -1;
     }
+
+    /**
+     * The start of what's currently selected.
+     * @return Index of the first word in the selection, or -1 if nothing
+     * is selected.
+     */
+    public int getSelectionStart() {
+        return this.seqStart;
+    }
+
+    /**
+     * The end of what's currently selected.
+     * @return Index of the last word in the selection, or -1 if nothing
+     * is selected.
+     */
+    public int getSelectionEnd() {
+        return this.seqEnd;
+    }
+
+    /**
+     * Gets the word at the given index.
+     * @param index Index
+     * @return String containing the word at the index, or null if there isn't such a word.
+     */
+    public String getWordAt(int index) {
+        if (index < 0 || index >= this.words.size()) return null;
+        return ((Text)this.words.get(index).getChildren().get(0)).getText();
+    }
 }

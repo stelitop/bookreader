@@ -16,6 +16,7 @@ import java.io.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class TTSSynthesiser {
@@ -29,6 +30,12 @@ public class TTSSynthesiser {
      * An array containing all word media files in order.
      */
     private MediaPlayer[] wordSounds = null;
+
+    /**
+     * Currently selected language. Should be a language code compatible
+     * with tesseract, usually only 'bg' and 'en'.
+     */
+    private String language = null;
 
     // Dependencies
     private final TextHighlighter textHighlighter;
@@ -251,11 +258,39 @@ public class TTSSynthesiser {
     }
 
     /**
+     * Sets the language for the synthesiser to use forward. Must be
+     * set before being able to load text.
+     * @param lang The language code for the synthesiser. Should be
+     *             either 'bg' or 'en', or any code compatible with
+     *             tesseract.
+     */
+    public void setLanguage(String lang) {
+        this.language = lang;
+    }
+
+    /**
+     * Checks whether the synthesiser is in a state where it can load text.
+     *
+     * Currently, the only condition is for the language to be set.
+     * @return True if it can, false otherwise.
+     */
+    public boolean canBeLoaded() {
+        return this.language != null;
+    }
+
+    /**
      * Loads the sounds of the words and sentences of a text in advance to
      * reduce load time while reading.
      * @param words List of the words in the text.
+     * @throws IllegalStateException If the synthesiser is not in a state to be
+     * currently loaded.
+     * @see TTSSynthesiser#canBeLoaded()
      */
-    public void loadSounds(List<String> words) {
+    public void loadSounds(List<String> words) throws IllegalStateException{
+        if (!canBeLoaded()) {
+            throw new IllegalStateException("The synthesiser is not in a state to be loaded!");
+        }
+
         this.wordSounds = new MediaPlayer[words.size()];
 
         new Thread(() -> {
@@ -272,15 +307,21 @@ public class TTSSynthesiser {
      */
     private void loadIndividual(int index, String text) {
         if (wordSounds[index] != null) return;
-        ProcessBuilder pb = new ProcessBuilder("gtts-cli", text,
+        ProcessBuilder pb = new ProcessBuilder("gtts-cli",
                 "--output", "word" + index + ".mp3",
-                "--lang", "bg");
+                "--lang", this.language,
+                text);
         pb.directory(new File("data/tts/"));
         try {
             Process process = pb.start();
-            process.waitFor();
-            wordSounds[index] = new MediaPlayer(new Media(new File("data/tts/word" + index + ".mp3").toURI().toString()));
-            wordSounds[index].getTotalDuration().subtract(Duration.millis(100));
+            boolean finished = process.waitFor(1000, TimeUnit.MILLISECONDS);
+
+            if (finished) {
+                wordSounds[index] = new MediaPlayer(new Media(new File("data/tts/word" + index + ".mp3").toURI().toString()));
+            } else {
+
+            }
+            //wordSounds[index].getTotalDuration().subtract(Duration.millis(100));
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -304,21 +345,29 @@ public class TTSSynthesiser {
         if (this.wordSounds == null) {
             throw new NullPointerException("There were no loaded sounds! wordSounds was null.");
         }
-        chainReadWords(0);
+        chainReadWords(0, wordSounds.length-1, true);
     }
 
-    private void chainReadWords(int index) {
+    public void readRange(int selectionStart, int selectionEnd) {
+        stopCurrentRead();
+        if (this.wordSounds == null) {
+            throw new NullPointerException("There were no loaded sounds! wordSounds was null.");
+        }
+        chainReadWords(selectionStart, selectionEnd, false);
+    }
+
+    private void chainReadWords(int startingIndex, int lastIndex, boolean shiftSelection) {
         //System.out.println("Read word: " + index);
-        while (wordSounds[index] == null) {
-            // TODO implement this better
+        if (wordSounds[startingIndex] == null) {
+            loadIndividual(startingIndex, textHighlighter.getWordAt(startingIndex));
         }
         //System.out.println("Out of loop: " + index);
-        textHighlighter.selectNextWord();
-        this.currentSound = wordSounds[index];
+        if (shiftSelection) textHighlighter.selectNextWord();
+        this.currentSound = wordSounds[startingIndex];
         this.currentSound.setOnEndOfMedia(() -> {
             //System.out.println("Word " + index + " End: " + System.currentTimeMillis());
-            if (index < wordSounds.length - 1) {
-                chainReadWords(index+1);
+            if (startingIndex < wordSounds.length - 1 && startingIndex < lastIndex) {
+                chainReadWords(startingIndex+1, lastIndex, shiftSelection);
             } else {
                 this.currentSound = null;
             }
@@ -344,7 +393,7 @@ public class TTSSynthesiser {
     /**
      * Stops whatever is currently being read, if any.
      */
-    private void stopCurrentRead() {
+    public void stopCurrentRead() {
         if (this.currentSound == null) return;
         this.currentSound.stop();
         this.currentSound = null;
