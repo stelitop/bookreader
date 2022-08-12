@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.TextFlow?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bookreader.javafx.controllers.MainScreenController">
+   <top>
+      <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="Файл">
+            <items>
+                  <MenuItem mnemonicParsing="false" onAction="#openFile" text="Отвори" />
+              <MenuItem mnemonicParsing="false" onAction="#closeFile" text="Затвори" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Камера">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#loadTextFromCameraPicture" text="Снимане" />
+              </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Настройки за ниско зрение">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#openLowVisionSettingsWindow" text="Настройки" />
+              </items>
+            </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <bottom>
+      <TextField fx:id="loadingText" disable="true" editable="false" BorderPane.alignment="CENTER" />
+   </bottom>
+   <center>
+      <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="549.0" prefWidth="0.0" BorderPane.alignment="CENTER">
+         <content>
+            <TextFlow fx:id="mainTextWrapper" prefHeight="548.0" prefWidth="800.0" style="-fx-background-color: white;">
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+            </TextFlow>
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>

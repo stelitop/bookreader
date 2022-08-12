@@ -4,6 +4,7 @@ import com.github.sarxos.webcam.*;
 import org.springframework.stereotype.Component;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 
 @Component
 public class ScanningCamera implements WebcamMotionListener{
@@ -64,6 +65,29 @@ public class ScanningCamera implements WebcamMotionListener{
      */
     public void setWebcam(Webcam webcam) {
         this.webcam = webcam;
+    }
+
+    /**
+     * Takes a picture with the current camera. If there isn't one, the
+     * default one is attempted to be used.
+     * @return
+     */
+    public BufferedImage takePicture() {
+        if (this.webcam == null) {
+            this.autodetectWebcam();
+        }
+        if (this.webcam == null) {
+            throw new IllegalStateException("No webcam set or could be found.");
+        }
+        boolean previousState = this.webcam.isOpen();
+        if (!previousState) {
+            this.webcam.open();
+        }
+        BufferedImage img = this.webcam.getImage();
+        if (!previousState) {
+            this.webcam.close();
+        }
+        return img;
     }
 
     /**
