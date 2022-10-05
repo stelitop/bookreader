@@ -4,6 +4,8 @@ import bookreader.exceptions.UnsupportedExtensionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
@@ -40,11 +42,14 @@ public class FileProcesser {
         if (lastDot == -1) throw new IOException();
         String extension = file.getAbsolutePath().substring(lastDot + 1).toLowerCase();
 
+        System.out.println(extension);
+
         switch (extension) {
             case "txt":
                 return processTxtFile(file);
             case "png":
             case "jpg":
+                return ocr.processImage(file);
             case "pdf":
             default:
                 return ocr.processFile(file);

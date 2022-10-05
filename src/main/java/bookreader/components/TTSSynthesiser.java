@@ -1,5 +1,6 @@
 package bookreader.components;
 
+import bookreader.utils.TextUtils;
 import com.google.cloud.texttospeech.v1.*;
 import com.google.protobuf.ByteString;
 import javafx.scene.media.Media;
@@ -39,12 +40,15 @@ public class TTSSynthesiser {
 
     // Dependencies
     private final TextHighlighter textHighlighter;
+    private final TextUtils textUtils;
 
     @Autowired
     public TTSSynthesiser(
-            TextHighlighter textHighlighter
+            TextHighlighter textHighlighter,
+            TextUtils textUtils
     ) {
         this.textHighlighter = textHighlighter;
+        this.textUtils = textUtils;
     }
 
     public void testGoogle() throws IOException {
@@ -318,7 +322,10 @@ public class TTSSynthesiser {
 
             if (finished) {
                 wordSounds[index] = new MediaPlayer(new Media(new File("data/tts/word" + index + ".mp3").toURI().toString()));
-            } else {
+                wordSounds[index].setOnReady(() -> {
+                    Duration subtractDuration = textUtils.getSubtractDuration(text);
+                    wordSounds[index].setStopTime(wordSounds[index].getTotalDuration().subtract(subtractDuration));
+                });
 
             }
             //wordSounds[index].getTotalDuration().subtract(Duration.millis(100));

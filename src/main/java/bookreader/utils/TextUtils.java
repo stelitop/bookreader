@@ -1,5 +1,6 @@
 package bookreader.utils;
 
+import javafx.util.Duration;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -86,5 +87,20 @@ public class TextUtils {
         }
 
         return cyrillic >= latin ? "bg" : "en";
+    }
+
+    /**
+     * Gets how much time to subtract from a mediaplayer that contains this an
+     * mp3 file of this text. Because gTTS creates individual words with a small
+     * pause at the end, it should be removed by setting the stop time of the
+     * mediaplayer early.
+     * @param text Text used for TTS.
+     * @return A Duration object that can be directly subtracted from another
+     * Duration.
+     */
+    public Duration getSubtractDuration(String text) {
+        char c = text.charAt(text.length() - 1);
+        if (sentenceEndingChars.contains(c) || c == ',') return Duration.millis(150);
+        return Duration.millis(250);
     }
 }

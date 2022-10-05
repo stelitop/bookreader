@@ -25,10 +25,14 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
+import org.opencv.core.Mat;
+import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import javax.imageio.ImageIO;
 import javax.speech.AudioException;
 import javax.speech.EngineException;
 import java.awt.image.BufferedImage;
@@ -200,6 +204,7 @@ public class MainScreenController implements Initializable {
         }
         this.textHighlighter.load(actualWords, whitespaces);
         this.tts.setLanguage(textUtils.getLanguage(text));
+        this.refreshLowVisionSettings();
         this.tts.loadSounds(words);
         try {
             Thread.sleep(750);
@@ -277,5 +282,18 @@ public class MainScreenController implements Initializable {
                 loadingText.setText("");
             });
         }).start();
+    }
+
+    public void testGrayscale() {
+        Mat src = Imgcodecs.imread("spiderman.jpg");
+        //Creating the empty destination matrix
+        Mat dst = new Mat();
+        //Converting the image to grey scale
+        Imgproc.cvtColor(src, dst, Imgproc.COLOR_RGB2GRAY);
+        //Instantiating the Imagecodecs class
+        Imgcodecs imageCodecs = new Imgcodecs();
+        //Writing the image
+        Imgcodecs.imwrite("colortogreyscale.jpg", dst);
+        System.out.println("Image Saved");
     }
 }

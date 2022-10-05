@@ -14,11 +14,11 @@
          <font>
             <Font size="24.0" />
          </font></Button>
-      <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#cycleSpotlightColors" prefHeight="286.0" prefWidth="344.0" text="Промяна на цветовете на общия текст" textAlignment="CENTER" wrapText="true">
+      <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#cycleMainColors" prefHeight="286.0" prefWidth="344.0" text="Промяна на цветовете на общия текст" textAlignment="CENTER" wrapText="true">
          <font>
             <Font size="24.0" />
          </font></Button>
-      <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#cycleMainColors" prefHeight="286.0" prefWidth="330.0" text="Промяна на цветовете за селектиран текст" textAlignment="CENTER" wrapText="true">
+      <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#cycleSpotlightColors" prefHeight="286.0" prefWidth="330.0" text="Промяна на цветовете за селектиран текст" textAlignment="CENTER" wrapText="true">
          <font>
             <Font size="24.0" />
          </font></Button>

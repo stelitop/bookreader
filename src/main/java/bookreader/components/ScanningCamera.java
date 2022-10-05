@@ -1,10 +1,13 @@
 package bookreader.components;
 
 import com.github.sarxos.webcam.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 import org.springframework.stereotype.Component;
 
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
+import java.io.File;
 
 @Component
 public class ScanningCamera implements WebcamMotionListener{
@@ -13,7 +16,12 @@ public class ScanningCamera implements WebcamMotionListener{
      * Time in ms to wait after a motion was detected. If no motions occur in the
      * timeframe the camera will take a picture of what it sees.
      */
-    private static final int MotionlessTimeframe = 3000;
+    private final int MOTIONLESSTIMEFRAME = 3000;
+
+    /**
+     * Shutter sound effect used
+     */
+    private final MediaPlayer shutterSound = new MediaPlayer(new Media(new File("CameraShutterSoundEffect.mp3").toURI().toString()));
 
     /**
      * The webcam used. Null means that no webcam has been currently chosen.
@@ -84,6 +92,8 @@ public class ScanningCamera implements WebcamMotionListener{
             this.webcam.open();
         }
         BufferedImage img = this.webcam.getImage();
+        shutterSound.seek(Duration.ZERO);
+        shutterSound.play();
         if (!previousState) {
             this.webcam.close();
         }
@@ -168,7 +178,7 @@ public class ScanningCamera implements WebcamMotionListener{
     private void resetMotionThread() {
         this.waitForStopMotionThread = new Thread(() -> {
             try {
-                Thread.sleep(ScanningCamera.MotionlessTimeframe);
+                Thread.sleep(MOTIONLESSTIMEFRAME);
             } catch (InterruptedException e) {
                 return;
             }

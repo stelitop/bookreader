@@ -29,6 +29,12 @@
                 <MenuItem mnemonicParsing="false" onAction="#openLowVisionSettingsWindow" text="Настройки" />
               </items>
             </Menu>
+            <Menu mnemonicParsing="false" text="Testing">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#refreshLowVisionSettings" text="Refresh LVS" />
+                  <MenuItem mnemonicParsing="false" onAction="#testGrayscale" text="Check grayscale" />
+              </items>
+            </Menu>
         </menus>
       </MenuBar>
    </top>
