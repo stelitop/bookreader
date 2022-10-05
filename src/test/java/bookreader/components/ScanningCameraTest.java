@@ -23,24 +23,8 @@ class ScanningCameraTest {
     }
 
     @Test
-    void constructorNullValues() {
-        sc = new ScanningCamera();
-        assertThat(sc.getWebcam()).isNull();
-    }
-
-    @Test
     void getWebcam() {
         assertThat(sc.getWebcam()).isEqualTo(webcamMock);
-    }
-
-    @Test
-    void startMotionDetection() throws InterruptedException {
-
-    }
-
-    @Test
-    void stopMotionDetection() {
-        //TODO
     }
 
     @Test

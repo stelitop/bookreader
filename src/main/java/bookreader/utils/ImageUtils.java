@@ -1,10 +1,17 @@
 package bookreader.utils;
 
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfByte;
+import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
 import org.springframework.stereotype.Service;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 @Service
 public class ImageUtils {
@@ -39,5 +46,25 @@ public class ImageUtils {
 //        ImageFilter filter = new GrayFilter(true, 50);
 //        ImageProducer producer = new FilteredImageSource(bi.getSource(), filter);
 //        return Toolkit.getDefaultToolkit().createImage(producer);
+    }
+
+    /**
+     * Transforms an OpenCV material into a buffered image.
+     * @param mat Material.
+     * @return Transformed buffered image.
+     */
+    public BufferedImage openCVMatToBufferedImage(Mat mat) {
+        BufferedImage ret = new BufferedImage(mat.width(), mat.height(), BufferedImage.TYPE_3BYTE_BGR);
+        //DataBufferInt intBuffer = ret.getRa
+        byte[] data = ((DataBufferByte) ret.getRaster().getDataBuffer()).getData();
+        mat.get(0, 0, data);
+        return ret;
+    }
+
+    public Mat bufferedImage2Mat(BufferedImage image) throws IOException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ImageIO.write(image, "jpg", byteArrayOutputStream);
+        byteArrayOutputStream.flush();
+        return Imgcodecs.imdecode(new MatOfByte(byteArrayOutputStream.toByteArray()), Imgcodecs.IMWRITE_JPEG_QUALITY);
     }
 }
