@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.TextFlow?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bookreader.javafx.controllers.MainScreenController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@mainstyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bookreader.javafx.controllers.MainScreenController">
    <top>
       <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
         <menus>
@@ -44,7 +44,7 @@
    <center>
       <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="549.0" prefWidth="0.0" BorderPane.alignment="CENTER">
          <content>
-            <TextFlow fx:id="mainTextWrapper" prefHeight="548.0" prefWidth="800.0" style="-fx-background-color: white;">
+            <TextFlow fx:id="mainTextWrapper" prefHeight="548.0" prefWidth="800.0" styleClass="unfocusable_node" stylesheets="@mainstyle.css">
                <padding>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </padding>

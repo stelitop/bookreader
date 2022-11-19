@@ -68,38 +68,29 @@ public class OCR {
      */
     public String processImage(Mat img) throws IOException {
 
-        try {
-            ImageIO.write(imageUtils.openCVMatToBufferedImage(img),
-                    "jpg", new File("data/step0.jpg"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Mat mid = new Mat();
-        Imgproc.cvtColor(img, mid, Imgproc.COLOR_RGB2GRAY);
-        img = mid;
-        try {
-            ImageIO.write(imageUtils.openCVMatToBufferedImage(img),
-                    "jpg", new File("data/step1.jpg"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Imgproc.dilate(img, img, Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(2, 2)));
-        try {
-            ImageIO.write(imageUtils.openCVMatToBufferedImage(img),
-                    "jpg", new File("data/step2.jpg"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Imgproc.medianBlur(img, img, 1);
+//        try {
+//            ImageIO.write(imageUtils.openCVMatToBufferedImage(img),
+//                    "jpg", new File("data/step0.jpg"));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        Imgproc.cvtColor(img, img, Imgproc.COLOR_RGB2GRAY);
+        //Imgcodecs.imwrite("data/step1.jpg", img);
+
+        //Imgproc.dilate(img, img, Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(1.5, 1.5)));
+        //Imgcodecs.imwrite("data/step2.jpg", img);
+
+        //Imgproc.medianBlur(img, img, 3);
+        //Imgcodecs.imwrite("data/step3.jpg", img);
 
         BufferedImage image = imageUtils.openCVMatToBufferedImage(img);
-
-        try {
-            ImageIO.write(imageUtils.openCVMatToBufferedImage(img),
-                    "jpg", new File("data/step3.jpg"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//
+//        try {
+//            ImageIO.write(imageUtils.openCVMatToBufferedImage(img),
+//                    "jpg", new File("data/step3.jpg"));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         try {
 //            var rectangles = tesseract.getSegmentedRegions(image, 0);
@@ -107,6 +98,9 @@ public class OCR {
 //                System.out.println(r.toString());
 //            }
             String result = tesseract.doOCR(image);
+
+            System.out.println("Tesseract result:");
+            System.out.println(result);
 
             return filterResults(result);
         } catch (TesseractException e) {

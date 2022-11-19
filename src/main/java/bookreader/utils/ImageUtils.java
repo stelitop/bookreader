@@ -10,8 +10,10 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.*;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 @Service
 public class ImageUtils {
@@ -54,11 +56,23 @@ public class ImageUtils {
      * @return Transformed buffered image.
      */
     public BufferedImage openCVMatToBufferedImage(Mat mat) {
-        BufferedImage ret = new BufferedImage(mat.width(), mat.height(), BufferedImage.TYPE_3BYTE_BGR);
-        //DataBufferInt intBuffer = ret.getRa
-        byte[] data = ((DataBufferByte) ret.getRaster().getDataBuffer()).getData();
-        mat.get(0, 0, data);
-        return ret;
+//        BufferedImage ret = new BufferedImage(mat.width(), mat.height(), BufferedImage.TYPE_3BYTE_BGR);
+//        //DataBufferInt intBuffer = ret.getRa
+//        byte[] data = ((DataBufferByte) ret.getRaster().getDataBuffer()).getData();
+//        mat.get(0, 0, data);
+//        return ret;
+        MatOfByte matOfByte = new MatOfByte();
+        Imgcodecs.imencode(".jpg", mat, matOfByte);
+        byte[] byteArray = matOfByte.toArray();
+        InputStream is = new ByteArrayInputStream(byteArray);
+        BufferedImage bufferedImage = null;
+        try {
+            bufferedImage = ImageIO.read(is);
+            return bufferedImage;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public Mat bufferedImage2Mat(BufferedImage image) throws IOException {
