@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -285,15 +286,15 @@ public class MainScreenController implements Initializable {
     }
 
     public void testGrayscale() {
-        Mat src = Imgcodecs.imread("spiderman.jpg");
+        Mat src = Imgcodecs.imread("test_images/tarator.png");
         //Creating the empty destination matrix
         Mat dst = new Mat();
         //Converting the image to grey scale
         Imgproc.cvtColor(src, dst, Imgproc.COLOR_RGB2GRAY);
         //Instantiating the Imagecodecs class
-        Imgcodecs imageCodecs = new Imgcodecs();
+        //Imgcodecs imageCodecs = new Imgcodecs();
         //Writing the image
-        Imgcodecs.imwrite("colortogreyscale.jpg", dst);
+        Imgcodecs.imwrite("test_images/colortogreyscale.jpg", dst);
         System.out.println("Image Saved");
     }
 }
