@@ -36,6 +36,18 @@ public class TextUtils {
     }
 
     /**
+     * Reconstructs a text from a list of words by adding a space between every two
+     * consecutive words.
+     * @param words List of words.
+     * @return Reconstructed text.
+     */
+    public String reconstructTextFromWords(List<String> words) {
+        StringBuilder ret = new StringBuilder();
+        words.forEach(x -> ret.append(x.trim()).append(' '));
+        return ret.toString().trim();
+    }
+
+    /**
      * Splits the given text into individual sentences. Sentences are separated by
      * '.', '?' or '!', followed by an empty space (interval or new line).
      * @param text Text to split.

@@ -33,19 +33,22 @@ public class OCR {
     // Dependencies
     private final TextUtils textUtils;
     private final ImageUtils imageUtils;
+    private final TextFilterer textFilterer;
 
     @Autowired
     public OCR(
             Tesseract tesseract,
             TextUtils textUtils,
-            ImageUtils imageUtils
+            ImageUtils imageUtils,
+            TextFilterer textFilterer
     ) {
         this.tesseract = tesseract;
-        this.tesseract.setLanguage("bul+eng");
+        this.tesseract.setLanguage("bul");
         this.tesseract.setDatapath("./tessdata");
 
         this.textUtils = textUtils;
         this.imageUtils = imageUtils;
+        this.textFilterer = textFilterer;
     }
 
     public String processImage(BufferedImage image) {
@@ -102,7 +105,7 @@ public class OCR {
             System.out.println("Tesseract result:");
             System.out.println(result);
 
-            return filterResults(result);
+            return textFilterer.filterTextFromImage(result);
         } catch (TesseractException e) {
             e.printStackTrace();
             return "Failed to process";
@@ -124,29 +127,10 @@ public class OCR {
                 tesseract.setLanguage("eng");
                 result = tesseract.doOCR(file);
             }
-            return filterResults(result);
+            return textFilterer.filterTextFromImage(result);
         } catch (TesseractException e) {
             return null;
         }
-    }
-
-    /**
-     * Filters the results of an OCR read.
-     * @param raw Original result.
-     * @return Result after filtering errors.
-     */
-    private String filterResults(String raw) {
-        raw = raw.replace("©", "");
-        raw = raw.replace("|", "");
-        raw = raw.replace("[", "");
-        raw = raw.replace("]", "");
-        raw = raw.replace("{", "");
-        raw = raw.replace("<", "");
-        raw = raw.replace(">", "");
-        raw = raw.replace("}", "");
-        raw = raw.replace("\n", " ");
-        raw = raw.trim().replaceAll(" +", " ");
-        return raw;
     }
 
     public void test() {
