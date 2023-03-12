@@ -1,5 +1,7 @@
 package bookreader.configurations;
 
+import net.sourceforge.tess4j.TessAPI;
+import net.sourceforge.tess4j.TessAPI1;
 import net.sourceforge.tess4j.Tesseract;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,5 +16,10 @@ public class TesseractConfiguration {
     @Bean
     public Tesseract tesseract() {
         return new Tesseract();
+    }
+
+    @Bean
+    public TessAPI tessAPI() {
+        return TessAPI.INSTANCE;
     }
 }

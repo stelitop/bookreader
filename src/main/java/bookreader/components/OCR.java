@@ -2,9 +2,9 @@ package bookreader.components;
 
 import bookreader.utils.ImageUtils;
 import bookreader.utils.TextUtils;
-import net.sourceforge.tess4j.ITesseract;
-import net.sourceforge.tess4j.Tesseract;
-import net.sourceforge.tess4j.TesseractException;
+import com.recognition.software.jdeskew.ImageDeskew;
+import net.sourceforge.tess4j.*;
+import net.sourceforge.tess4j.util.LoadLibs;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
@@ -29,6 +29,7 @@ public class OCR {
      * Tesseract object used for OCR.
      */
     private final ITesseract tesseract;
+    private final TessAPI tessAPI;
 
     // Dependencies
     private final TextUtils textUtils;
@@ -40,15 +41,19 @@ public class OCR {
             Tesseract tesseract,
             TextUtils textUtils,
             ImageUtils imageUtils,
-            TextFilterer textFilterer
+            TextFilterer textFilterer,
+            TessAPI tessAPI
     ) {
         this.tesseract = tesseract;
         this.tesseract.setLanguage("bul");
         this.tesseract.setDatapath("./tessdata");
+        //this.tesseract.setOcrEngineMode(ITessAPI.TessOcrEngineMode.);
+        //this.tesseract.setPageSegMode(ITessAPI.TessPageSegMode.);
 
         this.textUtils = textUtils;
         this.imageUtils = imageUtils;
         this.textFilterer = textFilterer;
+        this.tessAPI = tessAPI;
     }
 
     public String processImage(BufferedImage image) {
@@ -77,6 +82,7 @@ public class OCR {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
+
         Imgproc.cvtColor(img, img, Imgproc.COLOR_RGB2GRAY);
         //Imgcodecs.imwrite("data/step1.jpg", img);
 
@@ -100,6 +106,14 @@ public class OCR {
 //            for (var r : rectangles) {
 //                System.out.println(r.toString());
 //            }
+
+            //tesseract.setPageSegMode(ITessAPI.TessPageSegMode.PSM_OSD_ONLY);
+            //String props = tesseract.doOCR(image);
+            //System.out.println("Info = " + props);
+            //tesseract.setPageSegMode(ITessAPI.TessPageSegMode.PSM_AUTO);
+
+            //ITessAPI.
+
             String result = tesseract.doOCR(image);
 
             System.out.println("Tesseract result:");

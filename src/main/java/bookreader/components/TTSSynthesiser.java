@@ -3,6 +3,7 @@ package bookreader.components;
 import bookreader.utils.TextUtils;
 import com.google.cloud.texttospeech.v1.*;
 import com.google.protobuf.ByteString;
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
@@ -14,6 +15,7 @@ import javax.speech.Central;
 import javax.speech.EngineException;
 import javax.speech.synthesis.*;
 import java.io.*;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -295,7 +297,11 @@ public class TTSSynthesiser {
             throw new IllegalStateException("The synthesiser is not in a state to be loaded!");
         }
 
+        // dispose of old files
+        disposeOfAudioFiles();
+
         this.wordSounds = new MediaPlayer[words.size()];
+        Arrays.fill(this.wordSounds, null);
 
         new Thread(() -> {
             for (int i = 0; i < words.size(); i++) {
@@ -316,10 +322,11 @@ public class TTSSynthesiser {
                 "--lang", this.language,
                 text);
         pb.directory(new File("data/tts/"));
+
+
         try {
             Process process = pb.start();
             boolean finished = process.waitFor(1000, TimeUnit.MILLISECONDS);
-
             if (finished) {
                 wordSounds[index] = new MediaPlayer(new Media(new File("data/tts/word" + index + ".mp3").toURI().toString()));
                 wordSounds[index].setOnReady(() -> {
@@ -371,6 +378,12 @@ public class TTSSynthesiser {
         //System.out.println("Out of loop: " + index);
         if (shiftSelection) textHighlighter.selectNextWord();
         this.currentSound = wordSounds[startingIndex];
+        if (this.currentSound == null) {
+            if (startingIndex < wordSounds.length - 1 && startingIndex < lastIndex) {
+                chainReadWords(startingIndex+1, lastIndex, shiftSelection);
+            }
+            return;
+        }
         this.currentSound.setOnEndOfMedia(() -> {
             //System.out.println("Word " + index + " End: " + System.currentTimeMillis());
             if (startingIndex < wordSounds.length - 1 && startingIndex < lastIndex) {
@@ -390,6 +403,7 @@ public class TTSSynthesiser {
         String word = textHighlighter.getCurrentSelection();
         loadIndividual(index, word);
         this.currentSound = wordSounds[index];
+        if (this.currentSound == null) return;
         this.currentSound.setOnEndOfMedia(() -> {
             this.currentSound = null;
         });
@@ -404,5 +418,17 @@ public class TTSSynthesiser {
         if (this.currentSound == null) return;
         this.currentSound.stop();
         this.currentSound = null;
+    }
+
+    /**
+     * Disposes of all media players used
+     */
+    public void disposeOfAudioFiles() {
+        if (wordSounds == null) return;
+        for (MediaPlayer wordSound : wordSounds) {
+            if (wordSound != null && wordSound.getStatus() != MediaPlayer.Status.DISPOSED) {
+                wordSound.dispose();
+            }
+        }
     }
 }

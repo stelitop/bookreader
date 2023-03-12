@@ -115,4 +115,21 @@ public class TextUtils {
         if (sentenceEndingChars.contains(c) || c == ',') return Duration.millis(150);
         return Duration.millis(250);
     }
+
+    /**
+     * Checks if a string contains at least one alphabetical character.
+     * @param s String to verify.
+     * @return True if at least one of the characters is either a cyrillic or latin
+     * letter and false otherwise.
+     */
+    public boolean stringHasLetters(String s) {
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if ('a' <= c && c <= 'z') return true;
+            if ('A' <= c && c <= 'Z') return true;
+            if ('а' <= c && c <= 'я') return true;
+            if ('А' <= c && c <= 'Я') return true;
+        }
+        return false;
+    }
 }
